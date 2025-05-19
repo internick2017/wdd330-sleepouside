@@ -261,3 +261,14 @@ footer {
   font-size: var(--small-font);
   padding: 1em;
 }
+
+.sort-controls {
+  margin: 1rem 0;
+  padding: 0.5rem;
+}
+
+.sort-controls select {
+  margin-left: 0.5rem;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
