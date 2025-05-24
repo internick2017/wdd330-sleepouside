@@ -1,4 +1,4 @@
-import { loadHeaderFooter } from "../js/utils.mjs";
+import { loadHeaderFooter } from "./utils.mjs";
 
 // Function to update active navigation link
 function updateActiveNav() {
@@ -18,21 +18,9 @@ function updateActiveNav() {
 }
 
 // Load header and footer
-document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    await loadHeaderFooter();
+document.addEventListener("DOMContentLoaded", () => {
+  loadHeaderFooter().then(() => {
     updateActiveNav();
-    // Add any product page specific JavaScript here
-  } catch (error) {
-    // Display error message to the user
-    const errorElement = document.createElement("div");
-    errorElement.className = "error-message";
-    errorElement.textContent = "Error loading product page. Please try again later.";
-    const main = document.querySelector("main");
-    if (main) {
-      main.prepend(errorElement);
-    } else {
-      document.body.prepend(errorElement);
-    }
-  }
+    // Add any about page specific JavaScript here
+  });
 });
