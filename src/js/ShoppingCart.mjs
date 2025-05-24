@@ -108,11 +108,13 @@ export default class ShoppingCart {
   }
 
   updateCartCount() {
-    const cartCount = document.querySelector('.cart-count');
-    if (cartCount) {
+    const cartCounts = document.querySelectorAll('.cart-count');
+    if (cartCounts.length > 0) {
       const count = this.getItemCount();
-      cartCount.textContent = count > 0 ? count : '';
-      cartCount.style.display = count > 0 ? 'inline-block' : 'none';
+      cartCounts.forEach(element => {
+        element.textContent = count > 0 ? count : '';
+        element.style.display = count > 0 ? 'flex' : 'none';
+      });
     }
   }
 
