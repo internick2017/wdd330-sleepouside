@@ -116,10 +116,29 @@ function addProductToCart(product) {
   localStorage.setItem("so-cart", JSON.stringify(cartItems));
 }
 
+// Function to update active navigation link
+function updateActiveNav() {
+  const currentPath = window.location.pathname;
+  const navLinks = document.querySelectorAll(".nav-link");
+  
+  navLinks.forEach(link => {
+    const linkPath = link.getAttribute("href");
+    // Check if the current path includes the link path or if we're on the home page
+    if ((currentPath === "/" && linkPath === "/index.html") || 
+        (currentPath !== "/" && linkPath !== "/index.html" && 
+         (linkPath.includes("product_listing") || linkPath.includes("product_pages")))) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+}
+
 // Initialize the page
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadHeaderFooter();
+    updateActiveNav();
     await loadProductDetails();
     
     // Add event listener for add to cart button
