@@ -4,22 +4,31 @@ import ProductData from "./ProductData.mjs";
 export default class ProductList {
   constructor(category, dataSource, listElement) {
     // Initialize properties
-    this.category = category;
-    this.dataSource = dataSource;
+    this.category = category || 'tents';
+    this.dataSource = dataSource || new ProductData();
     this.listElement = listElement;
     this.products = [];
   }
 
   async init() {
-    // Get the product data
-    const productData = new ProductData(this.category);
-    this.products = await productData.getData();
+    try {
+      // Get the product data from the API
+      this.products = await this.dataSource.getData(this.category);
+      
+      // If no products found, show a message
+      if (!this.products || this.products.length === 0) {
+        this.listElement.innerHTML = '<p class="no-products">No products found in this category.</p>';
+        return;
+      }
 
-    // Add sorting controls to the page
-    this.addSortingControls();
+      // Add sorting controls to the page
+      this.addSortingControls();
 
-    // Render the list
-    this.renderList();
+      // Render the list
+      this.renderList();
+    } catch (error) {
+      this.listElement.innerHTML = '<p class="error">Error loading products. Please try again later.</p>';
+    }
   }
 
   addSortingControls() {
@@ -67,15 +76,44 @@ export default class ProductList {
   }
 
   productCardTemplate(product) {
+    // Handle images - the Images is an object with different size variants
+    let imageUrl = '/images/placeholder.jpg';
+    
+    if (product.Images) {
+      // Try to get the best available image in this order of preference
+      if (product.Images.PrimaryMedium) {
+        imageUrl = product.Images.PrimaryMedium;
+      } else if (product.Images.PrimaryLarge) {
+        imageUrl = product.Images.PrimaryLarge;
+      } else if (product.Images.PrimarySmall) {
+        imageUrl = product.Images.PrimarySmall;
+      } else if (product.Images.PrimaryExtraLarge) {
+        imageUrl = product.Images.PrimaryExtraLarge;
+      } else if (product.Images.ExtraImages && product.Images.ExtraImages.length > 0) {
+        // If there are extra images, use the first one
+        imageUrl = product.Images.ExtraImages[0];
+      }
+    } else if (product.image) {
+      // Fallback to direct image property if exists
+      imageUrl = product.image;
+    }
+    
+    const productName = product.Name || product.name || 'Product Name';
+    const brandName = (product.Brand && (product.Brand.Name || product.Brand.name)) || '';
+    const displayName = product.NameWithoutBrand || product.name || productName;
+    const price = product.FinalPrice || product.finalPrice || product.price || 0;
+    const formattedPrice = `$${parseFloat(price).toFixed(2)}`;
+    
     return `<li class="product-card">
-      <a href="product_pages/${product.Id}.html">
+      <a href="/product_pages/index.html?product=${product.Id || ''}">
         <img
-          src="${product.Image}"
-          alt="Image of ${product.Name}"
+          src="${imageUrl}"
+          alt="${productName}"
+          loading="lazy"
         />
-        <h3 class="card__brand">${product.Brand.Name}</h3>
-        <h2 class="card__name">${product.NameWithoutBrand}</h2>
-        <p class="product-card__price">$${product.FinalPrice}</p>
+        <h3 class="card__brand">${brandName}</h3>
+        <h2 class="card__name">${displayName}</h2>
+        <p class="product-card__price">${formattedPrice}</p>
       </a>
     </li>`;
   }
