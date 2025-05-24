@@ -1,31 +1,74 @@
-# BYU-Pathway Worldwide Online
+# ⛺ SleepOutside - Outdoor Gear E-commerce
+
 ## WDD 330 - Web Frontend Development II
 
-### ⛺ SleepOutside Starter Code
+This repository contains the SleepOutside web application project for WDD 330, an e-commerce platform for outdoor gear. The project is built with modern JavaScript and follows best practices for frontend development.
 
- - This repository is the start of the SleepOutside web application project for WDD 330. The repository contains branches which are checkpoints for the team and individual assignments throughout the course.
+## 📋 Prerequisites
 
- - https://byui-cse.github.io/wdd330-ww-course/week01/team.html
+- Node.js (v14 or higher recommended)
+- npm (comes with Node.js)
 
-### Prerequisites
+## 🚀 Getting Started
 
-- You must have Node installed to run the following commands.
-[WDD 330 Setup Environment](https://byui-cse.github.io/wdd330-ww-course/intro/)
+1. Clone the repository:
+   ```bash
+   git clone [repository-url]
+   cd wdd330-sleepouside
+   ```
 
-### Common Workflow Commands
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-- `npm run lint` to run ESLint against your code to find errors.
-- `npm run format` to run Prettier to automatically format your code.
-- `npm run start` starts up a local server and updates on any JS or CSS/SCSS
-- `npm run build` to build final files when you are ready to turn in.
+3. Start the development server:
+   ```bash
+   npm run start
+   ```
+   The application will be available at `http://localhost:5173`
 
+## 🛠️ Project Structure
+
+```
+src/
+├── cart/           # Shopping cart functionality
+├── checkout/       # Checkout process
+├── css/            # Stylesheets
+├── js/             # JavaScript modules
+├── json/           # Data files
+├── product_pages/  # Product listing and details
+├── public/         # Static assets
+└── test/           # Test files
+```
+
+## 📝 Available Scripts
+
+- `npm start` - Start the development server with hot-reload
+- `npm run build` - Build the application for production (outputs to `/dist`)
+- `npm run lint` - Run ESLint to check for code quality issues
+- `npm run format` - Format code using Prettier
+- `npm test` - Run tests with Jest
+
+## 🧪 Testing
+
+Run the test suite with:
+```bash
+npm test
+```
+
+## 🌐 Production
+
+Production URL: [SleepOutside Live Demo](https://bejewelled-centaur-2cb23d.netlify.app/)
+
+## 📚 Resources
+
+- [WDD 330 Course Materials](https://byui-cse.github.io/wdd330-ww-course/)
+- [Vite Documentation](https://vitejs.dev/)
+- [ESLint Documentation](https://eslint.org/)
+- [Prettier Documentation](https://prettier.io/)
 
 ---
+
 _BYU-Pathway Worldwide improves lives through access to spiritually based, online affordable higher education. Its mission is to develop disciples of Jesus Christ who are leaders in their homes, the Church, and their communities._
-
-
-Production URl
-[text](https://bejewelled-centaur-2cb23d.netlify.app/)
-
-
 
