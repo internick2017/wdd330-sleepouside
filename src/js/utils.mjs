@@ -41,13 +41,42 @@ export async function loadTemplate(path) {
   return html;
 }
 
+/**
+ * Gets a URL parameter by name
+ * @param {string} paramName - The name of the URL parameter to get
+ * @param {string} url - The URL to parse (defaults to window.location.href)
+ * @returns {string|null} The value of the parameter or null if not found
+ */
+export function getParam(paramName, url = window.location.href) {
+  const urlObj = new URL(url);
+  return urlObj.searchParams.get(paramName);
+}
+
 export async function loadHeaderFooter() {
-  const header = await loadTemplate("/partials/header.html");
-  const footer = await loadTemplate("/partials/footer.html");
+  // Check if header and footer elements already exist
+  const headerElement = document.querySelector('header');
+  const footerElement = document.querySelector('footer');
 
-  const headerElement = document.getElementById("main-header");
-  const footerElement = document.getElementById("main-footer");
+  // Only load templates if the elements don't already contain content
+  if (!headerElement || !headerElement.innerHTML.trim()) {
+    try {
+      const header = await loadTemplate("/public/partials/header.html");
+      if (headerElement) {
+        renderWithTemplate(header, headerElement);
+      }
+    } catch (error) {
+      // Error loading header
+    }
+  }
 
-  renderWithTemplate(header, headerElement);
-  renderWithTemplate(footer, footerElement);
+  if (!footerElement || !footerElement.innerHTML.trim()) {
+    try {
+      const footer = await loadTemplate("/public/partials/footer.html");
+      if (footerElement) {
+        renderWithTemplate(footer, footerElement);
+      }
+    } catch (error) {
+      // Error loading footer
+    }
+  }
 }

@@ -4,12 +4,14 @@
 
 This repository contains the SleepOutside web application project for WDD 330, an e-commerce platform for outdoor gear. The project is built with modern JavaScript (ES6+ modules) and follows best practices for frontend development, including dynamic content rendering and state management.
 
-## 🆕 Latest Updates (v1.1.0)
+## 🆕 Latest Updates (v1.2.0)
 
-- **Dynamic Header/Footer**: Implemented reusable header and footer components
-- **Shopping Cart**: Added a fully functional shopping cart with template-based rendering
-- **Code Organization**: Improved project structure with better module separation
-- **Responsive Design**: Enhanced mobile-first styling for all components
+- **Product Catalog**: Implemented dynamic product listing with category filtering
+- **Product Details**: Added detailed product pages with image galleries
+- **API Integration**: Connected to external API for product data
+- **Responsive Images**: Optimized image loading with responsive image handling
+- **Performance**: Improved loading performance with lazy loading
+- **Error Handling**: Enhanced error handling and user feedback
 
 ## 📋 Prerequisites
 
@@ -20,7 +22,7 @@ This repository contains the SleepOutside web application project for WDD 330, a
 
 1. Clone the repository:
    ```bash
-   git clone [repository-url]
+   git clone https://github.com/yourusername/wdd330-sleepouside.git
    cd wdd330-sleepouside
    ```
 
@@ -29,35 +31,59 @@ This repository contains the SleepOutside web application project for WDD 330, a
    npm install
    ```
 
-3. Start the development server:
+3. Create a `.env` file in the root directory and add your API URL:
+   ```
+   VITE_SERVER_URL=https://wdd330-backend.onrender.com/
+   ```
+
+4. Start the development server:
    ```bash
-   npm run start
+   npm run dev
    ```
    The application will be available at `http://localhost:5173`
+
+## 🌐 API Integration
+
+The application uses the following API endpoints:
+- `GET /products/search/{category}` - Get products by category
+- `GET /product/{id}` - Get product details by ID
 
 ## 🛠️ Project Structure
 
 ```
 src/
-├── cart/               # Shopping cart functionality
-│   ├── cart.js         # Cart page logic
-│   ├── cart.css        # Cart page styles
-│   └── checkout.js     # Checkout process
-├── css/                # Global stylesheets
-├── js/                 # JavaScript modules
-│   ├── ShoppingCart.mjs # Shopping cart module
-│   ├── main.js         # Main application logic
-│   └── utils.mjs       # Utility functions
-├── json/               # Data files
-├── partials/           # HTML templates
-│   └── cart-item.html  # Cart item template
-├── product_pages/      # Product listing and details
-├── public/             # Static assets
-│   └── partials/       # Reusable HTML partials
-│       ├── header.html # Site header
-│       └── footer.html # Site footer
+├── cart/                   # Shopping cart functionality
+│   ├── cart.js             # Cart page logic
+│   ├── cart.css            # Cart page styles
+│   └── checkout.js         # Checkout process
+├── css/                    # Global stylesheets
+├── js/                     # JavaScript modules
+│   ├── ShoppingCart.mjs    # Shopping cart module
+│   ├── ProductData.mjs     # Product data fetching and management
+│   ├── ProductList.mjs     # Product listing component
+│   ├── main.js             # Main application logic
+│   └── utils.mjs           # Utility functions
+├── product_listing/        # Product listing pages
+│   ├── index.html          # Product listing template
+│   └── product-listing.js  # Listing page logic
+├── product_pages/          # Individual product pages
+│   ├── index.html          # Product detail template
+│   └── productDetail.js    # Product detail logic
+├── public/                 # Static assets
+│   └── partials/           # Reusable HTML partials
+│       ├── header.html     # Site header
+│       └── footer.html     # Site footer
 └── test/               # Test files
 ```
+
+## 📝 Features
+
+- **Product Catalog**: Browse products by category with filtering
+- **Product Details**: View detailed product information with image galleries
+- **Shopping Cart**: Add/remove items, update quantities
+- **Responsive Design**: Mobile-first approach with responsive images
+- **Modern JavaScript**: Built with ES6+ modules and modern APIs
+- **Performance Optimized**: Lazy loading and efficient rendering
 
 ## 📝 Available Scripts
 
@@ -67,14 +93,14 @@ src/
 - `npm run format` - Format code using Prettier
 - `npm test` - Run tests with Jest
 
-## 🛒 Shopping Cart Features
+## 📚 Dependencies
 
-- Add/remove items from cart
-- Update item quantities
-- Dynamic cart total calculation
-- Persistent cart state (using localStorage)
-- Responsive design for all screen sizes
-- Template-based rendering for cart items
+- [Font Awesome](https://fontawesome.com/) - Icons
+- [Google Fonts](https://fonts.google.com/) - Typography
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🏗️ Project Architecture
 

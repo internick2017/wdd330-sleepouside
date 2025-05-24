@@ -1,18 +1,22 @@
-import { loadHeaderFooter } from '../js/utils.mjs';
-import ShoppingCart from '../js/ShoppingCart.mjs';
+import { loadHeaderFooter } from "../js/utils.mjs";
+import ShoppingCart from "../js/ShoppingCart.mjs";
 
 // Initialize the shopping cart
 const cart = ShoppingCart.getInstance();
 
 // Load header, footer, and render cart
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadHeaderFooter();
     await cart.renderCart();
     
     // Add any additional cart page initialization here
   } catch (error) {
-    console.error('Error initializing cart page:', error);
+    // Display error message to the user
+    const errorElement = document.createElement("div");
+    errorElement.className = "error-message";
+    errorElement.textContent = "Error loading cart. Please try again later.";
+    document.querySelector("main").prepend(errorElement);
   }
 });
 

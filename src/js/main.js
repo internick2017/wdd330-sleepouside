@@ -2,7 +2,7 @@ import { loadHeaderFooter } from "./utils.mjs";
 import ProductList from "./ProductList.mjs";
 
 // Load header and footer
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadHeaderFooter();
     
@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       myProductList.init();
     }
   } catch (error) {
-    console.error('Error initializing page:', error);
+    // Display error message to the user
+    const errorElement = document.createElement("div");
+    errorElement.className = "error-message";
+    errorElement.textContent = "Error loading page content. Please try again later.";
+    document.querySelector("main").prepend(errorElement);
   }
 });
