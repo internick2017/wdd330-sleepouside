@@ -3,18 +3,18 @@
 
 // Import required modules
 import { loadHeaderFooter, getParam } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
 
 // Function to update active navigation link
 function updateActiveNav() {
   const currentPath = window.location.pathname;
   const navLinks = document.querySelectorAll(".nav-link");
-  
+
   navLinks.forEach(link => {
     const linkPath = link.getAttribute("href");
     // Check if the current path includes the link path or if we're on the home page
-    if ((currentPath === "/" && linkPath === "/index.html") || 
+    if ((currentPath === "/" && linkPath === "/index.html") ||
         (currentPath !== "/" && linkPath !== "/index.html" && currentPath.includes(linkPath.replace("/index.html", "")))) {
       link.classList.add("active");
     } else {
@@ -28,12 +28,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     await loadHeaderFooter();
     updateActiveNav();
-    
+
     // Get category from URL parameter
     const category = getParam("category");
 
     // Initialize product list
-    const dataSource = new ProductData(category || "tents"); // Default to 'tents' if no category
+    const dataSource = new ExternalServices(); // Default to 'tents' if no category
     const listElement = document.querySelector(".product-list");
 
     if (listElement) {

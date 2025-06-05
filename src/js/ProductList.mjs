@@ -1,11 +1,11 @@
 import { renderListWithTemplate } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 
 export default class ProductList {
   constructor(category, dataSource, listElement) {
     // Initialize properties
     this.category = category || 'tents';
-    this.dataSource = dataSource || new ProductData();
+    this.dataSource = dataSource || new ExternalServices();
     this.listElement = listElement;
     this.products = [];
   }
@@ -14,7 +14,7 @@ export default class ProductList {
     try {
       // Get the product data from the API
       this.products = await this.dataSource.getData(this.category);
-      
+
       // If no products found, show a message
       if (!this.products || this.products.length === 0) {
         this.listElement.innerHTML = '<p class="no-products">No products found in this category.</p>';
@@ -78,7 +78,7 @@ export default class ProductList {
   productCardTemplate(product) {
     // Handle images - the Images is an object with different size variants
     let imageUrl = '/images/placeholder.jpg';
-    
+
     if (product.Images) {
       // Try to get the best available image in this order of preference
       if (product.Images.PrimaryMedium) {
@@ -97,13 +97,13 @@ export default class ProductList {
       // Fallback to direct image property if exists
       imageUrl = product.image;
     }
-    
+
     const productName = product.Name || product.name || 'Product Name';
     const brandName = (product.Brand && (product.Brand.Name || product.Brand.name)) || '';
     const displayName = product.NameWithoutBrand || product.name || productName;
     const price = product.FinalPrice || product.finalPrice || product.price || 0;
     const formattedPrice = `$${parseFloat(price).toFixed(2)}`;
-    
+
     return `<li class="product-card">
       <a href="/product_pages/index.html?product=${product.Id || ''}">
         <img
