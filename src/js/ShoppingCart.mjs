@@ -62,7 +62,7 @@ export default class ShoppingCart {
 
     // Load the template
     const template = await this.loadTemplate();
-    
+
     // Render each item
     const itemsHtml = this.items.map(item => {
       return this.renderCartItem(template, item);
@@ -70,7 +70,7 @@ export default class ShoppingCart {
 
     // Update the DOM
     this.parentElement.innerHTML = itemsHtml || '<p>Your cart is empty.</p>';
-    
+
     // Add event listeners
     this.parentElement.querySelectorAll('.cart-card__remove').forEach(button => {
       button.addEventListener('click', (e) => {
@@ -78,10 +78,13 @@ export default class ShoppingCart {
         this.removeItem(productId);
       });
     });
-    
+
     // Update cart count in header if it exists
     this.updateCartCount();
-    
+
+    // Update cart total if element exists
+    this.updateCartTotal();
+
     return this.parentElement;
   }
 
@@ -96,14 +99,18 @@ export default class ShoppingCart {
   }
 
   renderCartItem(template, product) {
-    return template.replace(/\$\{([^}]+)\}/g, (match, p1) => {
-      const keys = p1.split('.');
-      let value = product;
-      for (const key of keys) {
-        value = value?.[key];
-        if (value === undefined) break;
+    return template.replace(/\$\{([^}]+)\}/g, (match, property) => {
+      // Handle nested properties and provide defaults
+      if (property === 'price') {
+        return parseFloat(product.price || 0).toFixed(2);
       }
-      return value !== undefined ? value : '';
+      if (property === 'quantity') {
+        return product.quantity || 1;
+      }
+      if (property === 'color') {
+        return product.color || 'N/A';
+      }
+      return product[property] || '';
     });
   }
 
@@ -118,8 +125,16 @@ export default class ShoppingCart {
     }
   }
 
+  updateCartTotal() {
+    const totalElement = document.getElementById('cart-total');
+    if (totalElement) {
+      const total = this.getTotal();
+      totalElement.textContent = total.toFixed(2);
+    }
+  }
+
   // Static method to get or create cart instance
-  static getInstance(key = 'cart', parentSelector = '.product-list') {
+  static getInstance(key = "cart", parentSelector = ".product-list") {
     if (!ShoppingCart.instance) {
       ShoppingCart.instance = new ShoppingCart(key, parentSelector);
     }

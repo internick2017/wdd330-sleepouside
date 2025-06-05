@@ -53,13 +53,17 @@ The application uses the following API endpoints:
 ```
 src/
 ├── cart/                   # Shopping cart functionality
-│   ├── cart.js             # Cart page logic
+│   ├── cart.js             # Cart page logic with checkout navigation
 │   ├── cart.css            # Cart page styles
-│   └── checkout.js         # Checkout process
+│   └── index.html          # Cart page template
+├── checkout/               # Checkout functionality
+│   ├── checkout.js         # Checkout page controller
+│   └── index.html          # Checkout form template
 ├── css/                    # Global stylesheets
 ├── js/                     # JavaScript modules
 │   ├── ShoppingCart.mjs    # Shopping cart module
-│   ├── ProductData.mjs     # Product data fetching and management
+│   ├── ExternalServices.mjs # API service class (formerly ProductData)
+│   ├── CheckoutProcess.mjs # Checkout processing and calculations
 │   ├── ProductList.mjs     # Product listing component
 │   ├── main.js             # Main application logic
 │   └── utils.mjs           # Utility functions
