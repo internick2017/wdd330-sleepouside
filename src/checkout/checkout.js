@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateActiveNav();
 
     // Initialize checkout process
-    myCheckout = new CheckoutProcess("cart", ".checkout-summary");
+    myCheckout = new CheckoutProcess("cart", ".order-summary");
     myCheckout.init();
     myCheckout.calculateOrderTotal();
 
