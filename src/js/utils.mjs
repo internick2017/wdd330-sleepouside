@@ -54,8 +54,8 @@ export function getParam(paramName, url = window.location.href) {
 
 export async function loadHeaderFooter() {
   // Check if header and footer elements already exist
-  const headerElement = document.querySelector('header');
-  const footerElement = document.querySelector('footer');
+  const headerElement = document.querySelector("header");
+  const footerElement = document.querySelector("footer");
 
   // Only load templates if the elements don't already contain content
   if (!headerElement || !headerElement.innerHTML.trim()) {
@@ -79,4 +79,27 @@ export async function loadHeaderFooter() {
       // Error loading footer
     }
   }
+
+  // Initialize cart count after header is loaded
+  initializeCartCount();
+}
+
+/**
+ * Initialize cart count display on page load
+ */
+export function initializeCartCount() {
+  // Use setTimeout to ensure DOM is ready and avoid potential import issues
+  setTimeout(() => {
+    // Check if cart count elements exist before initializing
+    const cartCountElements = document.querySelectorAll(".cart-count");
+    if (cartCountElements.length > 0) {
+      // Import ShoppingCart dynamically to avoid circular dependencies
+      import("./ShoppingCart.mjs").then(({ default: ShoppingCart }) => {
+        const cart = ShoppingCart.getInstance("so-cart", ".product-list");
+        cart.updateCartCount();
+      }).catch(error => {
+        // Silently handle import errors to avoid console noise
+      });
+    }
+  }, 100);
 }

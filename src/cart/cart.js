@@ -19,7 +19,7 @@ function updateActiveNav() {
 }
 
 // Initialize the shopping cart
-const cart = ShoppingCart.getInstance("cart", ".product-list");
+const cart = ShoppingCart.getInstance("so-cart", ".product-list");
 
 // Load header, footer, and render cart
 document.addEventListener("DOMContentLoaded", async () => {
