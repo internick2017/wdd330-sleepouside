@@ -22,7 +22,13 @@ export function setClick(selector, callback) {
   qs(selector).addEventListener("click", callback);
 }
 
-export function renderListWithTemplate(templateFn, parentElement, list, position = "afterbegin", clear = true) {
+export function renderListWithTemplate(
+  templateFn,
+  parentElement,
+  list,
+  position = "afterbegin",
+  clear = true,
+) {
   if (clear) {
     parentElement.innerHTML = "";
   }
@@ -52,31 +58,69 @@ export function getParam(paramName, url = window.location.href) {
   return urlObj.searchParams.get(paramName);
 }
 
+function showError(message) {
+  // Create or find error container
+  let errorContainer = document.querySelector(".error-container");
+  if (!errorContainer) {
+    errorContainer = document.createElement("div");
+    errorContainer.className = "error-container";
+    document.body.prepend(errorContainer);
+  }
+
+  // Create error element
+  const errorElement = document.createElement("div");
+  errorElement.className = "error-message";
+  errorElement.textContent = message;
+
+  // Add to container
+  errorContainer.appendChild(errorElement);
+
+  // Auto-remove after 5 seconds
+  setTimeout(() => {
+    errorElement.remove();
+    // Remove container if empty
+    if (errorContainer.children.length === 0) {
+      errorContainer.remove();
+    }
+  }, 5000);
+}
+
 export async function loadHeaderFooter() {
   // Check if header and footer elements already exist
   const headerElement = document.querySelector("header");
   const footerElement = document.querySelector("footer");
 
   // Only load templates if the elements don't already contain content
-  if (!headerElement || !headerElement.innerHTML.trim()) {
+  if (!headerElement?.innerHTML.trim()) {
     try {
       const header = await loadTemplate("/partials/header.html");
       if (headerElement) {
         renderWithTemplate(header, headerElement);
       }
     } catch (error) {
-      // Error loading header
+      // Log error in a production-safe way or use a logging service
+      const errorMessage = "Error loading header: " + error.message;
+      // Consider implementing a proper error handling/logging mechanism here
+      // add error handling logic here
+      showError(errorMessage);
+
+      // Add this function definition at the end of the file
     }
   }
 
-  if (!footerElement || !footerElement.innerHTML.trim()) {
+  if (!footerElement?.innerHTML.trim()) {
     try {
       const footer = await loadTemplate("/partials/footer.html");
       if (footerElement) {
         renderWithTemplate(footer, footerElement);
       }
+      // Log error in a production-safe way or use a logging service
+      // Consider implementing a proper error handling/logging mechanism here
     } catch (error) {
-      // Error loading footer
+      // Log error in a production-safe way or use a logging service
+      const errorMessage = "Error loading footer: " + error.message;
+      // Consider implementing a proper error handling/logging mechanism here
+      showError(errorMessage);
     }
   }
 
@@ -94,12 +138,14 @@ export function initializeCartCount() {
     const cartCountElements = document.querySelectorAll(".cart-count");
     if (cartCountElements.length > 0) {
       // Import ShoppingCart dynamically to avoid circular dependencies
-      import("./ShoppingCart.mjs").then(({ default: ShoppingCart }) => {
-        const cart = ShoppingCart.getInstance("so-cart", ".product-list");
-        cart.updateCartCount();
-      }).catch(error => {
-        // Silently handle import errors to avoid console noise
-      });
+      import("./ShoppingCart.mjs")
+        .then(({ default: ShoppingCart }) => {
+          const cart = ShoppingCart.getInstance("so-cart", ".product-list");
+          cart.updateCartCount();
+        })
+        .catch((error) => {
+          // Silently handle import errors to avoid console noise
+        });
     }
   }, 100);
 }

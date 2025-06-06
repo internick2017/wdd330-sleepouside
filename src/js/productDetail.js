@@ -35,7 +35,7 @@ async function loadProductDetails() {
     // Update the page with product details
     updateProductDisplay(product);
   } catch (error) {
-    showError("Error loading product details. Please try again later.");
+    showError(`Error loading product details: ${error.message || "Please try again later."}`);
   }
 }
 
@@ -106,7 +106,8 @@ async function addToCartHandler(e) {
       }, 3000);
     }
   } catch (error) {
-    showError("Error adding item to cart. Please try again.");
+
+    showError(`Error adding item to cart: ${error.message}. Please try again.`);
   }
 }
 
@@ -161,6 +162,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       addToCartBtn.addEventListener("click", addToCartHandler);
     }
   } catch (error) {
-    showError("Error initializing product page. Please try again later.");
+    showError("Error loading page: " + (error.message || "Please try again later."));
   }
 });
