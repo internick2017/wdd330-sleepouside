@@ -1,9 +1,13 @@
 import { loadHeaderFooter, getParam } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
+import ShoppingCart from "./ShoppingCart.mjs";
 
 // Initialize product data source
 const dataSource = new ExternalServices();
 const productId = getParam("product");
+
+// Initialize shopping cart
+const cart = ShoppingCart.getInstance("so-cart", ".product-list");
 
 // DOM Elements
 const productImage = document.querySelector(".product-detail img");
@@ -31,7 +35,7 @@ async function loadProductDetails() {
     // Update the page with product details
     updateProductDisplay(product);
   } catch (error) {
-    showError("Error loading product details. Please try again later.");
+    showError(`Error loading product details: ${error.message || "Please try again later."}`);
   }
 }
 
@@ -89,7 +93,7 @@ async function addToCartHandler(e) {
   try {
     const product = await dataSource.findProductById(e.target.dataset.id);
     if (product) {
-      addProductToCart(product);
+      await addProductToCart(product);
       // Show success message
       const successMsg = document.createElement("div");
       successMsg.className = "success-message";
@@ -102,17 +106,13 @@ async function addToCartHandler(e) {
       }, 3000);
     }
   } catch (error) {
-    showError("Error adding item to cart. Please try again.");
+
+    showError(`Error adding item to cart: ${error.message}. Please try again.`);
   }
 }
 
 // Add product to cart
-function addProductToCart(product) {
-  let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-  if (!Array.isArray(cartItems)) {
-    cartItems = [cartItems];
-  }
-
+async function addProductToCart(product) {
   // Format product to match cart item structure
   const cartItem = {
     id: product.Id,
@@ -125,15 +125,8 @@ function addProductToCart(product) {
     quantity: 1
   };
 
-  // Check if item already exists in cart
-  const existingItemIndex = cartItems.findIndex(item => item.id === cartItem.id);
-  if (existingItemIndex >= 0) {
-    cartItems[existingItemIndex].quantity += 1;
-  } else {
-    cartItems.push(cartItem);
-  }
-
-  localStorage.setItem("cart", JSON.stringify(cartItems));
+  // Add item to cart using ShoppingCart class
+  await cart.addItem(cartItem);
 }
 
 // Function to update active navigation link
@@ -161,11 +154,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateActiveNav();
     await loadProductDetails();
 
+    // Initialize cart count for this page
+    cart.updateCartCount();
+
     // Add event listener for add to cart button
     if (addToCartBtn) {
       addToCartBtn.addEventListener("click", addToCartHandler);
     }
   } catch (error) {
-    showError("Error initializing product page. Please try again later.");
+    showError("Error loading page: " + (error.message || "Please try again later."));
   }
 });

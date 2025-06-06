@@ -19,7 +19,7 @@ function updateActiveNav() {
 }
 
 // Initialize the shopping cart
-const cart = ShoppingCart.getInstance("cart", ".product-list");
+const cart = ShoppingCart.getInstance("so-cart", ".product-list");
 
 // Load header, footer, and render cart
 document.addEventListener("DOMContentLoaded", async () => {
@@ -32,11 +32,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Add any additional cart page initialization here
   } catch (error) {
+
     // Display error message to the user
     const errorElement = document.createElement("div");
     errorElement.className = "error-message";
-    errorElement.textContent = "Error loading cart. Please try again later.";
-    document.querySelector("main").prepend(errorElement);
+    errorElement.textContent = `Error loading cart: ${error.message || "Please try again later."}`;
+
+    const mainElement = document.querySelector("main");
+    if (mainElement) {
+      mainElement.prepend(errorElement);
+    } else {
+      document.body.prepend(errorElement);
+    }
   }
 });
 
