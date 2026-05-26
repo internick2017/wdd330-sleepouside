@@ -41,14 +41,16 @@ async function loadProductDetails() {
 
 // Update the product display with the fetched data
 function updateProductDisplay(product) {
-  // Set image - use PrimaryLarge for detail view
-  if (product.Images && product.Images.length > 0) {
-    const primaryLargeImage = product.Images.find(img =>
-      img.ImageType === "PrimaryLarge"
-    ) || product.Images[0];
-
-    if (primaryLargeImage) {
-      productImage.src = primaryLargeImage.URL;
+  // Set image - Images is an object with named keys e.g. PrimaryLarge, PrimaryMedium
+  if (product.Images) {
+    const imageUrl =
+      product.Images.PrimaryLarge ||
+      product.Images.PrimaryExtraLarge ||
+      product.Images.PrimaryMedium ||
+      product.Images.PrimarySmall ||
+      (product.Images.ExtraImages && product.Images.ExtraImages[0]);
+    if (imageUrl && productImage) {
+      productImage.src = imageUrl;
       productImage.alt = product.Name;
     }
   }
@@ -117,9 +119,9 @@ async function addProductToCart(product) {
   const cartItem = {
     id: product.Id,
     name: product.Name,
-    image: product.Images && product.Images.length > 0 ?
-           product.Images.find(img => img.ImageType === "PrimarySmall")?.URL ||
-           product.Images[0].URL : "",
+    image: product.Images
+      ? product.Images.PrimarySmall || product.Images.PrimaryMedium || product.Images.PrimaryLarge || ""
+      : "",
     price: product.FinalPrice,
     color: product.Colors && product.Colors.length > 0 ? product.Colors[0].ColorName : "N/A",
     quantity: 1
