@@ -99,7 +99,8 @@ export default class ShoppingCart {
   }
 
   renderCartItem(template, product) {
-    return template.replace(/\$\{([^}]+)\}/g, (match, property) => {
+    const base = import.meta.env.BASE_URL;
+    const rendered = template.replace(/\$\{([^}]+)\}/g, (match, property) => {
       // Handle nested properties and provide defaults
       if (property === 'price') {
         return parseFloat(product.price || 0).toFixed(2);
@@ -112,6 +113,7 @@ export default class ShoppingCart {
       }
       return product[property] || '';
     });
+    return rendered.replace(/href="\//g, `href="${base}`).replace(/src="\//g, `src="${base}`);
   }
 
   updateCartCount() {

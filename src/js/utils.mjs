@@ -93,7 +93,9 @@ export async function loadHeaderFooter() {
   // Only load templates if the elements don't already contain content
   if (!headerElement?.innerHTML.trim()) {
     try {
-      const header = await loadTemplate(`${import.meta.env.BASE_URL}partials/header.html`);
+      const base = import.meta.env.BASE_URL;
+      let header = await loadTemplate(`${base}partials/header.html`);
+      header = header.replace(/href="\//g, `href="${base}`).replace(/src="\//g, `src="${base}`);
       if (headerElement) {
         renderWithTemplate(header, headerElement);
       }
