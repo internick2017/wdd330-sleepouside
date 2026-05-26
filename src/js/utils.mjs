@@ -93,7 +93,7 @@ export async function loadHeaderFooter() {
   // Only load templates if the elements don't already contain content
   if (!headerElement?.innerHTML.trim()) {
     try {
-      const header = await loadTemplate("/partials/header.html");
+      const header = await loadTemplate(`${import.meta.env.BASE_URL}partials/header.html`);
       if (headerElement) {
         renderWithTemplate(header, headerElement);
       }
@@ -110,7 +110,7 @@ export async function loadHeaderFooter() {
 
   if (!footerElement?.innerHTML.trim()) {
     try {
-      const footer = await loadTemplate("/partials/footer.html");
+      const footer = await loadTemplate(`${import.meta.env.BASE_URL}partials/footer.html`);
       if (footerElement) {
         renderWithTemplate(footer, footerElement);
       }

@@ -4,10 +4,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   root: "src/",
   publicDir: "public",
-  
-
-
-  build: {
+  base: "/wdd330-sleepouside/",  build: {
     outDir: "../dist",
     rollupOptions: {
       input: {

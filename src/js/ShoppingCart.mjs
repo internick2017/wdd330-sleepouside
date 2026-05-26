@@ -90,7 +90,7 @@ export default class ShoppingCart {
 
   async loadTemplate() {
     try {
-      const response = await fetch('/partials/cart-item.html');
+      const response = await fetch(`${import.meta.env.BASE_URL}partials/cart-item.html`);
       return await response.text();
     } catch (error) {
       console.error('Error loading cart item template:', error);
