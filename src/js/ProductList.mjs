@@ -105,7 +105,7 @@ export default class ProductList {
     const formattedPrice = `$${parseFloat(price).toFixed(2)}`;
 
     return `<li class="product-card">
-      <a href="/product_pages/index.html?product=${product.Id || ''}">
+      <a href="${import.meta.env.BASE_URL}product_pages/index.html?product=${product.Id || ''}">
         <img
           src="${imageUrl}"
           alt="${productName}"
